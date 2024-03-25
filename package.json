@@ -1,0 +1,26 @@
+{
+  "name": "poc-embedded-messenger",
+  "version": "1.0.0",
+  "description": "Embedded Messenger",
+  "scripts": {
+    "serve": "live-server src/app --mount=/packages:packages",
+    "docs": "jsdoc packages/* && live-server out --port=8081",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TextUsBiz/POC-Embedded-Messenger.git"
+  },
+  "author": "John Brown (john.brown@textus.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TextUsBiz/POC-Embedded-Messenger/issues"
+  },
+  "homepage": "https://github.com/TextUsBiz/POC-Embedded-Messenger#readme",
+  "devDependencies": {
+    "jsdoc": "^4.0.2"
+  },
+  "dependencies": {
+    "live-server": "^1.2.2"
+  }
+}
