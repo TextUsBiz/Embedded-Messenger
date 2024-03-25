@@ -2,6 +2,8 @@
 
 This codebase houses the proof-of-concept code for embedded messenger.
 
+https://www.loom.com/share/9e59c5d939b24fd8a54d3fc457f8fa77?sid=27bd99ba-4fd2-40ab-8a4a-6d18af3ea680
+
 ## Getting Started
 
 Install depedencies.
