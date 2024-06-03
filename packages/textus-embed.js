@@ -3,17 +3,20 @@ import "./types.js";
 export class TextUsEmbed {
   /**
    *
-   * @param {string} ssoKey - Useless for now.
+   * @param {string} docId - Container to use for iframe.
    * @param {EmbedOptions} options - Embed options for the frame.
    */
-  constructor(ssoKey, options) {
-    this.login(ssoKey);
+  constructor(docId, options) {
+    this.updateOptions(options);
 
+    this.iframe = null;
+    this.docId = docId;
+  }
+
+  updateOptions(updatedOptions) {
     const defaultOptions = {
-      height: "400",
       id: "textUs-embed-id",
       showBorder: false,
-      width: "400",
       contactContext: {},
       styling: {
         headerBackgroundColor: "#283C59",
@@ -31,20 +34,26 @@ export class TextUsEmbed {
 
     this.options = {
       ...defaultOptions,
-      ...options,
+      ...this.options,
+      ...updatedOptions,
     };
   }
 
-  /** Log in... somehow 🤷🏾‍♂️. */
-  login(ssoKey) {
-    return;
-  }
-
-  inject(docId) {
-    const { height, showBorder, width, id, contactContext, navItems, styling } =
-      this.options;
+  load() {
+    const {
+      account,
+      height,
+      showBorder,
+      width,
+      id,
+      contactContext,
+      navItems,
+      styling,
+    } = this.options;
 
     const qs = new URLSearchParams({
+      account: account,
+      conversationId: contactContext.conversationId,
       contactPhoneNumber: contactContext.phoneNumber,
       contactFullName: contactContext.fullName,
       headerBgColor: styling.headerBackgroundColor,
@@ -53,12 +62,16 @@ export class TextUsEmbed {
       navItems: [...navItems],
     });
 
+    // TODO: FLOW FOR GETTING CONVERSATION ID.
+    const src = `http://localhost:3000/c/${account}/inbox/open/${contactContext.conversationId}`;
+
     // TODO: CREATE AN /EMBED ROUTE TO PREVENT REDIRECT TO /DASHBOARD.
-    const src = `http://localhost:3000?${qs}`;
-    console.log(`### Embed src for ${id}:`, src);
+    // const src = `http://localhost:3000?${qs}`;
 
     // TODO: ALLOW EMBEDDING FROM SPECIFIC URLS.
     // const src = `https://next.textus.com?${qs}`;
+
+    console.log(`### Embed src for ${id}:`, src);
 
     // Just for logging.
     const url = new URL(src);
@@ -67,16 +80,22 @@ export class TextUsEmbed {
     console.log(`### Embed params for ${id}:`, params);
 
     // Create an iframe element
-    const iframe = document.createElement("iframe");
+    this.iframe = document.createElement("iframe");
+
+    // Reference to container
+    const container = document.querySelector(`#${this.docId}`);
+
+    // Clear container
+    container.innerHTML = null;
 
     // Set iframe attributes
-    iframe.src = src;
-    iframe.width = width;
-    iframe.height = height;
-    iframe.id = id;
-    iframe.frameBorder = Number(showBorder);
+    this.iframe.src = src;
+    this.iframe.width = width ?? container.clientWidth;
+    this.iframe.height = height ?? container.clientHeight;
+    this.iframe.id = id;
+    this.iframe.frameBorder = Number(showBorder);
 
     // Append iframe to the body of the document
-    document.querySelector(`#${docId}`).appendChild(iframe);
+    container.appendChild(this.iframe);
   }
 }

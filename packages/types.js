@@ -1,5 +1,6 @@
 /**
  * @typedef {Object} ContactContext
+ * @property {string} conversationId - Id of conversation.
  * @property {string} phoneNumber - Phone number of selected contact.
  * @property {string} fullName - Full name of selected contact.
  */
@@ -16,6 +17,7 @@
 
 /**
  * @typedef {Object} EmbedOptions
+ * @property {string} [account] - Account name.
  * @property {string} [height] - Height of the frame.
  * @property {boolean} [showBorder] - Whether to show frame border. Defaults to false.
  * @property {string} [width] - Width of the frame.
