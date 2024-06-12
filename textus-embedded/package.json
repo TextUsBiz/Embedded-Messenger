@@ -1,0 +1,27 @@
+{
+  "name": "@textus/embedded",
+  "version": "1.0.0",
+  "description": "TextUs Embedded is a library used for generating TextUs iframes to be displayed within your web app.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "keywords": [
+    "textus",
+    "iframe",
+    "embed",
+    "embedded",
+    "snippet"
+  ],
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "build:watch": "npm run clean && tsc --watch",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "author": "TextUs Team",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "rimraf": "^5.0.7",
+    "typescript": "^5.4.5"
+  }
+}

@@ -1,19 +1,21 @@
 # POC Embedded Messenger
 
-This codebase houses the proof-of-concept code for embedded messenger.
+This codebase houses the proof-of-concept code for embedded conversation and messenger.
 
 ## Getting Started
 
 Install depedencies.
 
 ```shell
+cd sample-app 
 npm i
 ```
 
-Serve.
+Start dev server.
 
 ```shell
-npm run serve
+cd sample-app
+npm run dev
 ```
 
 Edit Tesseract to allow embedding in iframes from port 8080.
@@ -35,17 +37,21 @@ Run Tesseract.
 ./bin/start
 ```
 
-## Generate and view docs
-
-```shell
-npm run docs
-```
-
 ## Project Structure
 
 ```text
-├── packages/       // Where the TextUsEmbed class (snippet) lives.
-├── src/            // The poc application.
-|   ├── app/        // Source code for poc application.
-|   ├── assets/     // Poc assets.
+├── textus-embedded/       // Where the TextUs Embedded snippet lives.
+├── sample-app/            // The poc application that uses the embedded snippet.
 ```
+
+## Making changes to embedded snippet
+
+Watch for typescript changes.
+
+```shell
+cd textus-embedded
+npm run build:watch
+```
+
+Make changes to files in `/src` directory.
+On change, the `/dist` folder will be updated with generated javascript and source maps.
