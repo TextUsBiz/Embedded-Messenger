@@ -7,15 +7,7 @@ This codebase houses the proof-of-concept code for embedded conversation and mes
 Install depedencies.
 
 ```shell
-cd sample-app 
-npm i
-```
-
-Start dev server.
-
-```shell
-cd sample-app
-npm run dev
+npm run init
 ```
 
 Edit Tesseract to allow embedding in iframes from port 8080.
@@ -36,6 +28,16 @@ Run Tesseract.
 ```shell
 ./bin/start
 ```
+
+(For now) Update `Conversation.ts` Auth token by trying to compose a message in localhost and copying the Bearer Auth token in the number call.
+
+Start dev server.
+
+```shell
+npm run sample
+```
+
+> View on localhost:8080
 
 ## Project Structure
 

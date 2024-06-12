@@ -33,6 +33,7 @@ export default function Home() {
   ];
 
   // ==== STATE ==== //
+  // TODO (JOHN BROWN): REPLACE ACCOUNT ID WITH AUTHENTICATED USER ID
   const [accountId, setAccountId] = useState<string>('bandwidth-v2-dev');
   const [phoneNumber, setPhoneNumber] = useState<string>(mockData[0].phoneNumber);
   const [conversationIframeUrl, setConversationIframeUrl] = useState<string | null>(null);
