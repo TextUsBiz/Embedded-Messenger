@@ -2,7 +2,7 @@
 
 import styles from './page.module.scss';
 import { useCallback, useEffect, useState } from 'react';
-import { getConversationUrl } from '@textus/embedded/dist/Conversation/Conversation';
+import { EmbeddedConversation, getConversationUrl } from '@textus/embedded/dist/Conversation/Conversation';
 
 export default function Home() {
   // ==== FIELDS ==== //
@@ -36,17 +36,19 @@ export default function Home() {
   const [phoneNumber, setPhoneNumber] = useState<string>(mockData[0].phoneNumber);
   const [conversationIframeUrl, setConversationIframeUrl] = useState<string | null>(null);
 
-  // ==== METHODS ==== //
-  const createIframe = useCallback(async () => {
-    const url = await getConversationUrl(phoneNumber);
-    setConversationIframeUrl(url);
-  }, [phoneNumber]);
-
-
   // ==== EFFECTS ==== //
   useEffect(() => {
-    createIframe();
-  }, [createIframe]);
+    const url = getConversationUrl(phoneNumber);
+    setConversationIframeUrl(url);
+
+    new EmbeddedConversation('iframe-here', {
+      height: 400,
+      width: 1200,
+      contact: {
+        phoneNumber: phoneNumber
+      }
+    });
+  }, [phoneNumber]);
 
   // ==== RENDER ==== //
   return (
@@ -80,6 +82,10 @@ export default function Home() {
         ) : (
           <iframe src={conversationIframeUrl} width={800} height={800} />
         )}
+      </div>
+
+      <div className="grid">
+        <div id='iframe-here'></div>
       </div>
     </div>
   );
