@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Embedded Messenger",
   "scripts": {
-    "serve": "live-server src/app --mount=/packages:packages",
-    "docs": "jsdoc packages/* && live-server out --port=8081",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "init": "npm --prefix ./sample-app i && npm --prefix ./textus-embedded i && npm run link",
+    "link": "cd ./textus-embedded && npm link && cd ../sample-app && npm link @textus/embedded",
+    "sample": "npm --prefix ./textus-embedded run build && npm --prefix ./sample-app run dev",
+    "watch": "npm --prefix ./textus-embedded run build:watch"
   },
   "repository": {
     "type": "git",

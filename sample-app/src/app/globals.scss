@@ -1,0 +1,22 @@
+table {
+  border-collapse: collapse;
+}
+
+tr {
+  cursor: pointer;
+
+  &:hover {
+    background: #ccc;
+  }
+}
+
+td {
+  padding: 8px;
+}
+
+div.grid {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
