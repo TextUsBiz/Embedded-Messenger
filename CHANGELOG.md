@@ -1,5 +1,12 @@
 # ChangeLog
 
+## 1.0.0 - Embedded Conversation Rewrite
+
+- Now uses the existing route in Tesseract for initial load of iframes. (`/c?phoneNumber={ PHONE_NUMBER }`).
+- Recreated sample app to use NextJS. 
+
+https://www.loom.com/share/43140c573fcf4cddbb1b05c8968f1ea0?sid=b363f463-1756-4cd4-86c8-3f2c7e27c4bd
+
 ## Wednesday, June 12, 2024 - Embedded Conversation (Basic functionality)
 
 - Call endpoint using account id and phone number to get conversation id.
