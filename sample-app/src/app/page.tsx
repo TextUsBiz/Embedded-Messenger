@@ -30,6 +30,7 @@ export default function Home() {
     { name: 'Stephanie Huang', phoneNumber: '9192950237', },
     { name: 'Trey Burghardt', phoneNumber: '6615052260', },
     { name: 'QA User', phoneNumber: '17207068625', },
+    { name: 'Unknown User', phoneNumber: '12345678901', },
   ];
 
   // ==== STATE ==== //
@@ -38,14 +39,15 @@ export default function Home() {
 
   // ==== EFFECTS ==== //
   useEffect(() => {
-    const url = getConversationUrl(phoneNumber);
+    const url = getConversationUrl(phoneNumber, "TalentReef");
     setConversationIframeUrl(url);
 
     new EmbeddedConversation('iframe-here', {
       height: 400,
       width: 1200,
       contact: {
-        phoneNumber: phoneNumber
+        phoneNumber: phoneNumber,
+        channelPartner: "TalentReef"
       }
     });
   }, [phoneNumber]);

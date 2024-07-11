@@ -1,9 +1,15 @@
 # ChangeLog
 
+## 1.1.0 - Implement new flow
+
+- Implements flow as diagrammed here: https://www.figma.com/board/EyfrqIJyUuFpKMzcmy4Pl3/EC-Logic?node-id=0-1&t=cnFjsT1NCW1JhZcq-0
+
+https://www.loom.com/share/8d3a095242a447b4a8bc2e69d840ba13?sid=edf8167a-a03e-4a1d-9b9c-0485edfb059e
+
 ## 1.0.0 - Embedded Conversation Rewrite
 
 - Now uses the existing route in Tesseract for initial load of iframes. (`/c?phoneNumber={ PHONE_NUMBER }`).
-- Recreated sample app to use NextJS. 
+- Recreated sample app to use NextJS.
 
 https://www.loom.com/share/43140c573fcf4cddbb1b05c8968f1ea0?sid=b363f463-1756-4cd4-86c8-3f2c7e27c4bd
 

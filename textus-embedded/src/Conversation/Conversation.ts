@@ -7,8 +7,8 @@ import { EmbeddedConversationOptionProps } from "../models/EmbeddedConversationO
  * @example 
  * <iframe src="getConversationUrl(number)" />
  */
-export function getConversationUrl(phoneNumber: string): string {
-  return `http://localhost:3000/c?phoneNumber=${encodeURIComponent(phoneNumber)}`;
+export function getConversationUrl(phoneNumber: string, channelPartner: string): string {
+  return `http://localhost:3000/c?phoneNumber=${encodeURIComponent(phoneNumber)}&channelPartner=${channelPartner}`;
 }
 
 /**
@@ -24,7 +24,8 @@ export function getConversationUrl(phoneNumber: string): string {
  *    height: 800,
  *     width: 800,
  *     contact: {
- *       phoneNumber: '555-555-5555'
+ *       phoneNumber: '555-555-5555',
+ *       channelPartner: 'CompanyName'
  *     }
  *   });
  */
@@ -44,7 +45,7 @@ export class EmbeddedConversation {
       }
 
       // Set iframe attributes.
-      iframe.src = getConversationUrl(contact.phoneNumber);
+      iframe.src = getConversationUrl(contact.phoneNumber, contact.channelPartner);
       iframe.width = String(width) ?? container.clientWidth;
       iframe.height = String(height) ?? container.clientHeight;
 
