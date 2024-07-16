@@ -6,8 +6,8 @@
     "init": "npm --prefix ./sample-app i && npm --prefix ./textus-embedded i && npm run link",
     "link": "cd ./textus-embedded && npm link && cd ../sample-app && npm link @textus/embedded",
     "sample": "npm --prefix ./textus-embedded run build && npm --prefix ./sample-app run dev",
-    "watch": "npm --prefix ./textus-embedded run build:watch",
-    "build": "npm --prefix ./textus-embedded run build"
+    "build": "npm --prefix ./textus-embedded run build",
+    "build:watch": "npm --prefix ./textus-embedded run build:watch"
   },
   "repository": {
     "type": "git",

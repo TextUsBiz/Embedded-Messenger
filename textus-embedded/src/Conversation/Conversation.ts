@@ -1,4 +1,4 @@
-import { EmbeddedConversationOptionProps } from "../models/EmbeddedConversationOptionProps";
+import { TextUsEmbeddedConversationOptionProps } from "../models/TextUsEmbeddedConversationOptionProps";
 
 /**
  * Method to build the iframe URL to display an embedded conversation.
@@ -13,49 +13,70 @@ export function getConversationUrl(phoneNumber: string, channelPartner: string):
 
 /**
  * Class to build an iframe with URL to display an embedded conversation.
- * @param docId Id of container.
+ * @param conatinerId Id of container.
+ * @param props Props for embedded conversation.
  * @returns Embedded Conversation iframe (placed inside of container).
  * @example 
  * <div id="iframe-here">
  *  <!-- The generated iframe will be placed here -->
  * </div>
  * 
- * const embeddedConversation = new EmbeddedConversation('iframe-here', {
- *    height: 800,
- *     width: 800,
+ * const embeddedConversation = new TextUsEmbeddedConversation('iframe-here', {
+ *    channelPartner: 'CompanyName',
+ *    height: '800px',
+ *    width: '800px',
  *     contact: {
  *       phoneNumber: '555-555-5555',
- *       channelPartner: 'CompanyName'
  *     }
  *   });
  */
-export class EmbeddedConversation {
-  constructor(docId: string, props: EmbeddedConversationOptionProps) {
+export class TextUsEmbeddedConversation {
+  iframe: HTMLIFrameElement | null = null;
+
+  constructor(
+    public containerId: string,
+    public props: TextUsEmbeddedConversationOptionProps,
+  ) { }
+
+  render() {
     try {
-      const { height, width, contact } = props;
+      const { channelPartner, height, width, contact } = this.props;
 
-      // Create an iframe element.
-      const iframe = document.createElement("iframe");
-
-      // Reference to container.
-      const container = document.querySelector(`#${docId}`);
-
-      if (!container) {
-        throw new Error(`Could not find container with id: ${docId}`);
+      if (!channelPartner) {
+        throw new Error('No channel partner provided.');
       }
 
-      // Set iframe attributes.
-      iframe.src = getConversationUrl(contact.phoneNumber, contact.channelPartner);
-      iframe.width = String(width) ?? container.clientWidth;
-      iframe.height = String(height) ?? container.clientHeight;
+      if (!contact) {
+        throw new Error('No contact provided.');
+      }
+
+      // Create an iframe element.
+      this.iframe = document.createElement("iframe");
+
+      // Reference to container.
+      const container = document.querySelector(`#${this.containerId}`);
+
+      if (!container) {
+        throw new Error(`Could not find container with id: ${this.containerId}`);
+      }
+
+      // Set iframe attributes. 
+      this.iframe.src = getConversationUrl(contact.phoneNumber, channelPartner);
+      this.iframe.width = width || String(container.clientWidth) + 'px';
+      this.iframe.height = height || String(container.clientHeight) + 'px';
 
       // Clear container.
       container.innerHTML = '';
 
       // Append iframe to container.
-      container.appendChild(iframe);
+      container.appendChild(this.iframe);
     } catch (err) {
       console.error(err);
     }
+  }
+
+  setContact(contact: TextUsEmbeddedConversationOptionProps['contact']) {
+    this.props.contact = contact;
+    this.iframe!.src = getConversationUrl(contact.phoneNumber, this.props.channelPartner);
   }
 }

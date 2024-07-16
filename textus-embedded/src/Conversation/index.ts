@@ -1,1 +1,1 @@
-export { getConversationUrl, EmbeddedConversation } from './Conversation';
+export { getConversationUrl, TextUsEmbeddedConversation as EmbeddedConversation } from './Conversation';

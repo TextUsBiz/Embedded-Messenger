@@ -4,7 +4,7 @@ This codebase houses the proof-of-concept code for embedded conversation and mes
 
 ## Getting Started
 
-Install depedencies.
+Install depedencies and set up a link to the textus-embedded package.
 
 ```shell
 npm run init
@@ -29,8 +29,6 @@ Run Tesseract.
 ./bin/start
 ```
 
-(For now) Update `Conversation.ts` Auth token by trying to compose a message in localhost and copying the Bearer Auth token in the number call.
-
 Start dev server.
 
 ```shell
@@ -39,21 +37,26 @@ npm run sample
 
 > View on localhost:8080
 
+## Making changes to embedded snippet
+
+Compile typescript changes.
+
+```shell
+npm run build
+```
+
+Or, compile and watch for typescript changes.
+
+```shell
+npm run build:watch
+```
+
+Make changes to files in `/src` directory.
+On change, the `/dist` folder will be updated with generated javascript and source maps.
+
 ## Project Structure
 
 ```text
 ├── textus-embedded/       // Where the TextUs Embedded snippet lives.
 ├── sample-app/            // The poc application that uses the embedded snippet.
 ```
-
-## Making changes to embedded snippet
-
-Watch for typescript changes.
-
-```shell
-cd textus-embedded
-npm run build:watch
-```
-
-Make changes to files in `/src` directory.
-On change, the `/dist` folder will be updated with generated javascript and source maps.

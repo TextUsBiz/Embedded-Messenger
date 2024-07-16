@@ -1,8 +1,8 @@
 'use client';
 
 import styles from './page.module.scss';
-import { useCallback, useEffect, useState } from 'react';
-import { EmbeddedConversation, getConversationUrl } from '@textus/embedded/dist/Conversation/Conversation';
+import { useEffect, useState, useRef } from 'react';
+import { TextUsEmbeddedConversation, getConversationUrl } from '@textus/embedded/dist/Conversation/Conversation';
 
 export default function Home() {
   // ==== FIELDS ==== //
@@ -33,61 +33,95 @@ export default function Home() {
     { name: 'Unknown User', phoneNumber: '12345678901', },
   ];
 
+  const defaultPhoneNumber = mockData[0].phoneNumber;
+
+  // Using the TextUsEmbeddedConversation class to create an iframe.
+  const embeddedConversation01 = useRef(new TextUsEmbeddedConversation('iframe-here', {
+    channelPartner: 'TalentReef',
+    height: '400px',
+    width: '800px',
+    contact: {
+      phoneNumber: defaultPhoneNumber,
+    }
+  }));
+
+  // Testing no width or height params.
+  const embeddedConversation02 = useRef(new TextUsEmbeddedConversation(styles.iframe2Here, {
+    channelPartner: 'TalentReef',
+    contact: {
+      phoneNumber: defaultPhoneNumber,
+    }
+  }));
+
   // ==== STATE ==== //
-  const [phoneNumber, setPhoneNumber] = useState<string>(mockData[0].phoneNumber);
+  const [phoneNumber, setPhoneNumber] = useState<string>(defaultPhoneNumber);
   const [conversationIframeUrl, setConversationIframeUrl] = useState<string | null>(null);
 
   // ==== EFFECTS ==== //
   useEffect(() => {
-    const url = getConversationUrl(phoneNumber, "TalentReef");
+    // Using the global getConversationUrl function to get the URL for the iframe.
+    const url = getConversationUrl(phoneNumber, 'TalentReef');
     setConversationIframeUrl(url);
-
-    new EmbeddedConversation('iframe-here', {
-      height: 400,
-      width: 1200,
-      contact: {
-        phoneNumber: phoneNumber,
-        channelPartner: "TalentReef"
-      }
-    });
   }, [phoneNumber]);
+
+  useEffect(() => {
+    embeddedConversation01.current.render();
+    embeddedConversation02.current.render();
+  }, []);
+
+  // ==== METHODS ==== //
+  const updateEmbeds = (phoneNumber: string) => {
+    embeddedConversation01.current.setContact({
+      phoneNumber,
+    });
+  };
 
   // ==== RENDER ==== //
   return (
     <div className='container'>
-      <div className="grid">
-        <table>
-          <thead>
-            <tr>
-              <th>Customer Name</th>
-              <th>Customer Phone Number</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {mockData.map((data, idx) => (
-              <tr
-                key={idx}
-                onClick={() => {
-                  setPhoneNumber(data.phoneNumber)
-                }}
-                className={data.phoneNumber === phoneNumber ? styles.selected : ''}>
-                <td>{data.name}</td>
-                <td>{data.phoneNumber}</td>
+      <div className='grid'>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Customer Name</th>
+                <th>Customer Phone Number</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
 
-        {conversationIframeUrl === null ? (
-          <>Loading...</>
-        ) : (
-          <iframe src={conversationIframeUrl} width={800} height={800} />
-        )}
-      </div>
+            <tbody>
+              {mockData.map((data, idx) => (
+                <tr
+                  key={idx}
+                  onClick={() => {
+                    setPhoneNumber(data.phoneNumber);
+                    updateEmbeds(data.phoneNumber);
+                  }}
+                  className={data.phoneNumber === phoneNumber ? styles.selected : ''}>
+                  <td>{data.name}</td>
+                  <td>{data.phoneNumber}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-      <div className="grid">
-        <div id='iframe-here'></div>
+        <div>
+          {conversationIframeUrl === null ? (
+            <>Loading...</>
+          ) : (
+            <>
+              <h2>(Method-based)</h2>
+              <iframe src={conversationIframeUrl} width={800} height={400} />
+            </>
+          )}
+
+          <h2>(Class-based) Will update</h2>
+          <div id='iframe-here'></div>
+
+          <h2>(Class-based) Will not update</h2>
+          <div id={styles.iframe2Here}></div>
+        </div>
       </div>
     </div>
   );
