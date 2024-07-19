@@ -8,7 +8,7 @@ import { TextUsEmbeddedConversationOptionProps } from "../models/TextUsEmbeddedC
  * <iframe src="getConversationUrl(number)" />
  */
 export function getConversationUrl(phoneNumber: string, channelPartner: string): string {
-  return `http://localhost:3000/c?phoneNumber=${encodeURIComponent(phoneNumber)}&channelPartner=${channelPartner}`;
+  return `http://localhost:3000/c/embedded?phoneNumber=${encodeURIComponent(phoneNumber)}&channelPartner=${channelPartner}`;
 }
 
 /**
