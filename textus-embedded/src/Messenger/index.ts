@@ -1,1 +1,3 @@
-export { Messenger } from './Messenger';
+export {
+  TextUsEmbeddedMessenger as EmbeddedMessenger
+} from './Messenger';

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basic sample app</title>
+    <script defer>
+      // Load the embedded script asynchronously.
+      const script = document.createElement("script");
+      script.src = "./embedded.min.js";
+      script.onload = onTextUsEmbeddedConversationReady;
+      document.head.appendChild(script);
+
+      // Declare the embedded conversation variable.
+      let textUsEmbeddedConversation;
+
+      function onTextUsEmbeddedConversationReady() {
+        // Generate the embedded conversation iframe.
+        textUsEmbeddedConversation = new TextUs.EmbeddedConversation(
+          "iframe-here",
+          {
+            channelPartner: "CompanyName",
+            height: "800px",
+            width: "800px",
+            contact: {
+              phoneNumber: "555-555-5555",
+            },
+          }
+        );
+
+        // Render the iframe.
+        textUsEmbeddedConversation.render();
+      }
+
+      // Update contact method.
+      function updateContact() {
+        textUsEmbeddedConversation.setContact({
+          phoneNumber: "444-444-4444",
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="iframe-here">
+      <!-- The generated iframe will be placed here -->
+    </div>
+
+    <button onclick="updateContact()">Update contact</button>
+  </body>
+</html>

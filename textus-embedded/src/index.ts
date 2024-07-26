@@ -1,4 +1,3 @@
-export { GetConversationByPhoneNumberResponse } from './models/GetConversationByPhoneNumberResponse';
-
-export { getConversationUrl } from './Conversation';
-export { Messenger } from './Messenger';
+export * from './models/GetConversationByPhoneNumberResponse';
+export * from './Conversation';
+export * from './Messenger';

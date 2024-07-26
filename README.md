@@ -58,5 +58,5 @@ On change, the `/dist` folder will be updated with generated javascript and sour
 
 ```text
 ├── textus-embedded/       // Where the TextUs Embedded snippet lives.
-├── sample-app/            // The poc application that uses the embedded snippet.
+├── examples/              // The poc application that uses the embedded snippet.
 ```

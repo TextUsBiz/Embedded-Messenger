@@ -3,10 +3,11 @@
   "version": "1.1.0",
   "description": "Embedded Messenger",
   "scripts": {
-    "init": "npm --prefix ./sample-app i && npm --prefix ./textus-embedded i && npm run link",
-    "link": "cd ./textus-embedded && npm link && cd ../sample-app && npm link @textus/embedded",
-    "sample": "npm --prefix ./textus-embedded run build && npm --prefix ./sample-app run dev",
+    "init": "npm --prefix ./examples/sample-app i && npm --prefix ./textus-embedded i && npm run link",
+    "link": "cd ./textus-embedded && npm link && cd ../examples/sample-app && npm link @textus/embedded",
+    "sample": "npm --prefix ./textus-embedded run build && npm --prefix ./examples/sample-app run dev",
     "build": "npm --prefix ./textus-embedded run build",
+    "build:production": "npm --prefix ./textus-embedded run build:production",
     "build:watch": "npm --prefix ./textus-embedded run build:watch"
   },
   "repository": {
