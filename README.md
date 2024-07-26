@@ -1,6 +1,6 @@
-# POC Embedded Messenger
+# Embedded Messenger
 
-This codebase houses the proof-of-concept code for embedded conversation and messenger.
+This codebase houses the code for embedded conversation and embedded messenger.
 
 ## Getting Started
 
