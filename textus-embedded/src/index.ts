@@ -1,3 +1,3 @@
-export * from './models/GetConversationByPhoneNumberResponse';
+export * from './models';
 export * from './Conversation';
 export * from './Messenger';

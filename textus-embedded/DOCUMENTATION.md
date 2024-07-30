@@ -8,7 +8,7 @@ This document explains how to embed a TextUs Conversation in your application.
 
 In order to load Embedded Conversations on your platform, your website must be whitelisted by the TextUs team. Please reach out to your customer support representative to verify that you have been whitelisted.
 
-## Embed using the TextUs.EmbeddedConversation() class
+## Embed using the TextUsEmbeddedConversation() class
 
 ### Create a container element
 
@@ -26,19 +26,38 @@ To render the generated conversation iframe, you need to create a container elem
 </html>
 ```
 
-### Download the code
+### Import the code
 
-You can download the Embedded codebase from our CDN provider. Load our script asynchronously by creating a script element and setting the `src`. Afterwards, wait for the `onload` event to ensure you can access all methods and classes.
+You can import the Embedded codebase from our CDN provider. Create a `<script>` that is of `type="module"`. Using  `import`, you can destructure the classes and methods you want to use in your code.
 
 ```html
-<script defer>
+<script defer type="module">
   ...
 
-  // Load the embedded script asynchronously.
-  const script = document.createElement("script");
-  script.src = "<CDN_LINK_HERE>";
-  script.onload = onTextUsEmbeddedConversationReady;
-  document.head.appendChild(script);
+  import { 
+    TextUsEmbeddedConversation, 
+    getConversationUrl 
+  } from '<INSERT_CDN_LINK_HERE';
+
+  // Your code here.
+  ...
+</script>
+```
+
+You may also use the `import()` method.
+
+```html
+<script defer type="module">
+  ...
+
+  import('<INSERT_CDN_LINK_HERE').then((TextUsModule) => {
+    const { 
+      TextUsEmbeddedConversation, 
+      getConversationUrl 
+    } = TextUsModule;
+
+    // Your code here.
+  });
 
   ...
 </script>
@@ -46,28 +65,24 @@ You can download the Embedded codebase from our CDN provider. Load our script as
 
 ### Render the iframe
 
-Then, create an instance of the TextUsEmbeddedConversation class. Ensure to pass in the `id` used by your container element. Afterwards, you can render the instance with the `render()` method.
+Then, create an instance of the TextUsEmbeddedConversation() class. Ensure to pass in the `id` used by your container element. Afterwards, you can render the instance with the `render()` method.
 
 ```html
 <script defer>
   ...
 
-  let textUsEmbeddedConversation;
+  // Generate the embedded conversation iframe.
+  const textUsEmbeddedConversation = new TextUsEmbeddedConversation('iframe-here', {
+    channelPartner: 'CompanyName',
+    height: '800px',
+    width: '800px',
+    contact: {
+      phoneNumber: '555-555-5555',
+    }
+  });
 
-  function onTextUsEmbeddedConversationReady() {
-    // Generate the embedded conversation iframe.
-    textUsEmbeddedConversation = new TextUs.EmbeddedConversation('iframe-here', {
-      channelPartner: 'CompanyName',
-      height: '800px',
-      width: '800px',
-      contact: {
-        phoneNumber: '555-555-5555',
-      }
-    });
-
-    // Render the iframe.
-    textUsEmbeddedConversation.render();
-  }
+  // Render the iframe.
+  textUsEmbeddedConversation.render();
 
   ...
 </script>
@@ -81,12 +96,12 @@ textUsEmbeddedConversation.setContact({
 });
 ```
 
-## Embed using the global TextUs.getConversationUrl() method
+## Embed using the global getConversationUrl() method
 
 If you prefer, you can use the `getConversationUrl()` global method to return the conversation iframe URL.
 
 ```js
-const conversationIframeUrl = TextUs.getConversationUrl('555-555-5555', 'CompanyName');
+const conversationIframeUrl = getConversationUrl('555-555-5555', 'CompanyName');
 ```
 
 Then, use the returned URL as your iframe `src`.
@@ -95,8 +110,63 @@ Then, use the returned URL as your iframe `src`.
 <html>
   <body>
 
-    <iframe src={conversationIframeUrl} width={800} height={400} />
+    <iframe   
+      src={conversationIframeUrl}   
+      width={800}   
+      height={400}  
+    />
   
   </body>
  </html>
+```
+
+## Basic Example
+
+Here's a fully working example.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basic sample app</title>
+    <script defer type="module">
+      // Fetch the embedded conversation script.
+      import { TextUsEmbeddedConversation } from "<INSERT_CDN_LINK_HERE>";
+
+      // Generate the embedded conversation iframe.
+      const textUsEmbeddedConversation = new TextUsEmbeddedConversation(
+        "iframe-here",
+        {
+          channelPartner: "CompanyName",
+          height: "800px",
+          width: "800px",
+          contact: {
+            phoneNumber: "555-555-5555",
+          },
+        }
+      );
+
+      // Render the iframe.
+      textUsEmbeddedConversation.render();
+
+      // Update contact phone number.
+      document
+        .querySelector("#update-contact")
+        .addEventListener("click", () => {
+          textUsEmbeddedConversation.setContact({
+            phoneNumber: "444-444-4444",
+          });
+        });
+    </script>
+  </head>
+  <body>
+    <div id="iframe-here">
+      <!-- The generated iframe will be placed here -->
+    </div>
+
+    <button id="update-contact">Update contact</button>
+  </body>
+</html>
 ```

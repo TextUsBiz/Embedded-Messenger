@@ -1,4 +1,4 @@
 export {
   getConversationUrl,
-  TextUsEmbeddedConversation as EmbeddedConversation
+  TextUsEmbeddedConversation,
 } from './Conversation';

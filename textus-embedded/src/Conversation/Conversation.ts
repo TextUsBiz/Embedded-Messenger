@@ -1,5 +1,8 @@
 import { TextUsEmbeddedConversationOptionProps } from "../models/TextUsEmbeddedConversationOptionProps";
 
+// Replaced during the build process.
+const textUsUrl = process.env.TEXTUS_URL;
+
 /**
  * Method to build the iframe URL to display an embedded conversation.
  * @param phoneNumber Phone number of contact.
@@ -8,7 +11,7 @@ import { TextUsEmbeddedConversationOptionProps } from "../models/TextUsEmbeddedC
  * <iframe src="getConversationUrl(number)" />
  */
 export function getConversationUrl(phoneNumber: string, channelPartner: string): string {
-  return `http://localhost:3000/c/embedded?phoneNumber=${encodeURIComponent(phoneNumber)}&channelPartner=${channelPartner}`;
+  return `${textUsUrl}/c/embedded?phoneNumber=${encodeURIComponent(phoneNumber)}&channelPartner=${channelPartner}`;
 }
 
 /**

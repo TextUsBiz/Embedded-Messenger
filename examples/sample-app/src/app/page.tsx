@@ -2,7 +2,7 @@
 
 import styles from './page.module.scss';
 import { useEffect, useState, useRef } from 'react';
-import { TextUsEmbeddedConversation, getConversationUrl } from '@textus/embedded/dist/Conversation/Conversation';
+import { TextUsEmbeddedConversation, getConversationUrl } from '@textus/embedded/lib/1.0.0/embedded.dev';
 
 export default function Home() {
   // ==== FIELDS ==== //
