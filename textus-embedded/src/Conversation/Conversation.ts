@@ -6,6 +6,7 @@ const textUsUrl = process.env.TEXTUS_URL;
 /**
  * Method to build the iframe URL to display an embedded conversation.
  * @param phoneNumber Phone number of contact.
+ * @param channelPartner Channel partner name.
  * @returns URL for iframe.
  */
 export function getConversationUrl(phoneNumber: string, channelPartner: string): string {
@@ -13,11 +14,11 @@ export function getConversationUrl(phoneNumber: string, channelPartner: string):
 }
 
 export class TextUsEmbeddedConversation {
-  iframe: HTMLIFrameElement | null = null;
+  private iframe: HTMLIFrameElement | null = null;
 
   /**
    * Class to build an iframe with URL to display an embedded conversation.
-   * @param conatinerId Id of container.
+   * @param conatinerId Id of container element.
    * @param props Props for embedded conversation.
    * @returns Embedded Conversation iframe (placed inside of container).
    */

@@ -12,7 +12,7 @@
     "snippet"
   ],
   "scripts": {
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc && typedoc src/index.ts",
     "build:watch": "npm run clean && tsc --watch",
     "build:development": "npm run build && dotenvx run -f .env.development -- node scripts/build.js",
     "build:production": "npm run build && dotenvx run -f .env.production -- node scripts/build.js",
@@ -22,8 +22,9 @@
   "author": "TextUs Team",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.14.2",
+    "@types/node": "^20.14.13",
     "rimraf": "^5.0.7",
+    "typedoc": "^0.26.5",
     "typescript": "^5.4.5"
   },
   "dependencies": {
