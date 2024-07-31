@@ -7,40 +7,28 @@ const textUsUrl = process.env.TEXTUS_URL;
  * Method to build the iframe URL to display an embedded conversation.
  * @param phoneNumber Phone number of contact.
  * @returns URL for iframe.
- * @example 
- * <iframe src="getConversationUrl(number)" />
  */
 export function getConversationUrl(phoneNumber: string, channelPartner: string): string {
   return `${textUsUrl}/c/embedded?phoneNumber=${encodeURIComponent(phoneNumber)}&channelPartner=${channelPartner}`;
 }
 
-/**
- * Class to build an iframe with URL to display an embedded conversation.
- * @param conatinerId Id of container.
- * @param props Props for embedded conversation.
- * @returns Embedded Conversation iframe (placed inside of container).
- * @example 
- * <div id="iframe-here">
- *  <!-- The generated iframe will be placed here -->
- * </div>
- * 
- * const embeddedConversation = new TextUsEmbeddedConversation('iframe-here', {
- *    channelPartner: 'CompanyName',
- *    height: '800px',
- *    width: '800px',
- *     contact: {
- *       phoneNumber: '555-555-5555',
- *     }
- *   });
- */
 export class TextUsEmbeddedConversation {
   iframe: HTMLIFrameElement | null = null;
 
+  /**
+   * Class to build an iframe with URL to display an embedded conversation.
+   * @param conatinerId Id of container.
+   * @param props Props for embedded conversation.
+   * @returns Embedded Conversation iframe (placed inside of container).
+   */
   constructor(
     public containerId: string,
     public props: TextUsEmbeddedConversationOptionProps,
   ) { }
 
+  /**
+   * Render the embedded conversation iframe.
+   */
   render() {
     try {
       const { channelPartner, height, width, contact } = this.props;
@@ -78,6 +66,10 @@ export class TextUsEmbeddedConversation {
     }
   }
 
+  /**
+   * Update the contact for the embedded conversation and re-render the iframe.
+   * @param contact Contact to set for the embedded conversation.
+   */
   setContact(contact: TextUsEmbeddedConversationOptionProps['contact']) {
     this.props.contact = contact;
     this.iframe!.src = getConversationUrl(contact.phoneNumber, this.props.channelPartner);

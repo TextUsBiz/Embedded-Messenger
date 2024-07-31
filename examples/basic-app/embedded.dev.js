@@ -7,10 +7,19 @@ var TextUsEmbeddedConversation = class {
   containerId;
   props;
   iframe = null;
+  /**
+   * Class to build an iframe with URL to display an embedded conversation.
+   * @param conatinerId Id of container.
+   * @param props Props for embedded conversation.
+   * @returns Embedded Conversation iframe (placed inside of container).
+   */
   constructor(containerId, props) {
     this.containerId = containerId;
     this.props = props;
   }
+  /**
+   * Render the embedded conversation iframe.
+   */
   render() {
     try {
       const { channelPartner, height, width, contact } = this.props;
@@ -34,6 +43,10 @@ var TextUsEmbeddedConversation = class {
       console.error(err);
     }
   }
+  /**
+   * Update the contact for the embedded conversation and re-render the iframe.
+   * @param contact Contact to set for the embedded conversation.
+   */
   setContact(contact) {
     this.props.contact = contact;
     this.iframe.src = getConversationUrl(contact.phoneNumber, this.props.channelPartner);
