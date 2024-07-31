@@ -9,7 +9,8 @@
     "build": "npm --prefix ./textus-embedded run build",
     "build:development": "npm --prefix ./textus-embedded run build:development",
     "build:production": "npm --prefix ./textus-embedded run build:production",
-    "build:watch": "npm --prefix ./textus-embedded run build:watch"
+    "build:watch": "npm --prefix ./textus-embedded run build:watch",
+    "docs": "open textus-embedded/docs/index.html"
   },
   "repository": {
     "type": "git",
