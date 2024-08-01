@@ -37,7 +37,7 @@ You can import the Embedded codebase from our CDN provider. Create a `<script>` 
   import { 
     TextUsEmbeddedConversation, 
     getConversationUrl 
-  } from '<INSERT_CDN_LINK_HERE';
+  } from '<INSERT_CDN_LINK_HERE>';
 
   // Your code here.
   ...
@@ -50,7 +50,7 @@ You may also use the `import()` method.
 <script defer type="module">
   ...
 
-  import('<INSERT_CDN_LINK_HERE').then((TextUsModule) => {
+  import('<INSERT_CDN_LINK_HERE>').then((TextUsModule) => {
     const { 
       TextUsEmbeddedConversation, 
       getConversationUrl 
