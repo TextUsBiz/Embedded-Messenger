@@ -1,4 +1,5 @@
 node_modules/
-
-# Generated docs
-out/
+dist/
+.env*
+# lib/
+# docs/

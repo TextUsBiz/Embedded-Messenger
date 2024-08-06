@@ -1,11 +1,16 @@
 {
   "name": "poc-embedded-messenger",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Embedded Messenger",
   "scripts": {
-    "serve": "live-server src/app --mount=/packages:packages",
-    "docs": "jsdoc packages/* && live-server out --port=8081",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "init": "npm --prefix ./examples/sample-app i && npm --prefix ./textus-embedded i && npm run link",
+    "link": "cd ./textus-embedded && npm link && cd ../examples/sample-app && npm link @textus/embedded",
+    "sample": "npm --prefix ./textus-embedded run build && npm --prefix ./examples/sample-app run dev",
+    "build": "npm --prefix ./textus-embedded run build",
+    "build:development": "npm --prefix ./textus-embedded run build:development",
+    "build:production": "npm --prefix ./textus-embedded run build:production",
+    "build:watch": "npm --prefix ./textus-embedded run build:watch",
+    "docs": "open textus-embedded/docs/index.html"
   },
   "repository": {
     "type": "git",
@@ -22,5 +27,6 @@
   },
   "dependencies": {
     "live-server": "^1.2.2"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
