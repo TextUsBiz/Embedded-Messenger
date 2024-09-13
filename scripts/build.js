@@ -3,26 +3,19 @@
  * This file is run through dotenvx, so it has access to environment variables from the .env files.
  */
 
-const fs = require("fs");
-const path = require("path");
-const esbuild = require("esbuild");
-const env = process.env.ENV;
+const fs = require('fs');
+const path = require('path');
+const esbuild = require('esbuild');
 
 // Get the package version
-const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
+const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const version = packageJson.version;
 
 // Define paths
-const distDir = path.resolve(__dirname, "..", "./dist");
-const outputDir = path.resolve(__dirname, "..", `lib/${version}`);
-const outputFile =
-  env === "production"
-    ? path.join(outputDir, "embedded.js")
-    : path.join(outputDir, "embedded.dev.js");
-const outputMinifyFile =
-  env === "production"
-    ? path.join(outputDir, "embedded.min.js")
-    : path.join(outputDir, "embedded.dev.min.js");
+const distDir = path.resolve(__dirname, '..', './dist');
+const outputDir = path.resolve(__dirname, '..', `lib/${version}`);
+const outputFile = path.join(outputDir, 'embedded.js');
+const outputMinifyFile = path.join(outputDir, 'embedded.min.js');
 
 // Create output directory if it doesn't exist
 if (!fs.existsSync(outputDir)) {
@@ -34,12 +27,8 @@ esbuild
   .build({
     entryPoints: [`${distDir}/index.js`],
     bundle: true,
-    format: "esm",
-    // globalName: "TextUs",
+    format: 'esm',
     outfile: outputFile,
-    define: {
-      "process.env.TEXTUS_URL": JSON.stringify(process.env.TEXTUS_URL),
-    },
   })
   .then(() => {
     // Log that the file was created successfully
@@ -52,13 +41,9 @@ esbuild
   .build({
     entryPoints: [`${distDir}/index.js`],
     bundle: true,
-    format: "esm",
-    // globalName: "TextUs",
+    format: 'esm',
     minify: true,
     outfile: outputMinifyFile,
-    define: {
-      "process.env.TEXTUS_URL": JSON.stringify(process.env.TEXTUS_URL),
-    },
   })
   .then(() => {
     // Log that the file was created successfully
