@@ -82,6 +82,7 @@ jobs:
     docker:
       - image: cimg/node:22.8.0
     steps:
+      - checkout
       - aws-configure-environment_profile:
           profile_name: "development"
           role_arn: "${AWS_DEVE_ROLE_ARN}"
