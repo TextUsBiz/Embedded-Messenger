@@ -1,0 +1,181 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@5
+  aws-s3:  circleci/aws-s3@4
+
+commands:
+  aws-configure-environment_profile:
+    description: "AWS Configuration, Environment Profile"
+    parameters:
+      profile_name:
+        type: string
+      role_arn:
+        type: string
+    steps:
+      - aws-cli/setup:
+          profile_name: << parameters.profile_name >>
+          role_arn: << parameters.role_arn >>
+          region: "us-east-1"
+          role_session_name: "circleci-<< parameters.profile_name >>"
+          session_duration: "1800"
+  variable_store:
+    description: "Export a Step Variable"
+    parameters:
+      key:
+        type: string
+        default: "UNKNOWN"
+      value:
+        type: string
+        default: "UNKNOWN"
+    steps:
+      - run:
+          name: Step Variable Store
+          command: |
+            printf "export %s=%s\n" "<< parameters.key >>" "<< parameters.value >>" >> ${BASH_ENV}
+            source ${BASH_ENV}
+            echo "<< parameters.key >> set to ${<< parameters.key >>}"
+  deploy:
+    description: "Deploy Artifact to new Environment"
+    parameters:
+      environment:
+        type: string
+      artifact:
+        type: string
+    steps:
+      - aws-s3/copy:
+          profile_name: << parameters.environment >>
+          arguments: "--cache-control \"public, max-age=3600\""
+          from: << parameters.artifact >>
+          to:   s3://textus.${CIRCLE_JOB:0:4}.static-host/$(cat /tmp/deploy_location)
+      - aws-s3/copy:
+          profile_name: << parameters.environment >>
+          arguments: "--storage-class \"STANDARD_IA\" --cache-control \"public, max-age=15\" --metadata \"archive=true\""
+          from: << parameters.artifact >>
+          to:   s3://textus.${CIRCLE_JOB:0:4}.static-host/$(cat /tmp/archive_location)
+  pull:
+    description: "Pull Artifact from previous Environment"
+    parameters:
+      environment:
+        type: string
+      to:
+        type: string
+    steps:
+      - aws-s3/copy:
+          profile_name: << parameters.environment >>
+          from: s3://textus.$(cut -c-4 \<<< "<< parameters.environment >>").static-host/$(cat /tmp/archive_location)
+          to:   << parameters.to >>
+  transform-snippet_connection:
+    parameters:
+      artifact:
+        type: string
+      url:
+        type: string
+    steps:
+      - run:
+          name: Transform Asset
+          command: |
+            sed -i -r 's#http[s]?://[^\"]+#<< parameters.url >>#g' << parameters.artifact >>
+
+jobs:
+  development_deploy:
+    docker:
+      - image: cimg/node:22.8.0
+    steps:
+      - aws-configure-environment_profile:
+          profile_name: "development"
+          role_arn: "${AWS_DEVE_ROLE_ARN}"
+      - run:
+          name: Dependencies Install
+          command: |
+            npm install
+      - run:
+          name: Build
+          command: |
+            npm run build
+            echo "${CIRCLE_PROJECT_REPONAME}"
+      - variable_store:
+          key: "PROJECT_SHORT_HASH"
+          value: $(md5sum \<<< "${CIRCLE_PROJECT_REPONAME}" | cut -c-7)
+      - variable_store:
+          key: "BUILD"
+          value: $(find . -type f -name "embedded.min.js")
+      - run:
+          name: Store Locations
+          command: |
+            sed -r "s#.*(([0-9])\.[0-9]\.[0-9])/([^\.]+)(.*)#${PROJECT_SHORT_HASH}/\2/\3-\1\4#" \<<< ${BUILD} > /tmp/archive_location
+            sed -r "s#.*(([0-9])\.[0-9]\.[0-9])/([^\.]+)(.*)#${PROJECT_SHORT_HASH}/\2/\3\4#"    \<<< ${BUILD} > /tmp/deploy_location
+      - deploy:
+          environment: "development"
+          artifact: ${BUILD}
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - archive_location
+            - deploy_location
+  staging_deploy:
+    docker:
+      - image: cimg/aws:2024.03
+    steps:
+      - aws-configure-environment_profile:
+          profile_name: "development"
+          role_arn: "${AWS_DEVE_ROLE_ARN}"
+      - aws-configure-environment_profile:
+          profile_name: "staging"
+          role_arn: "${AWS_STAG_ROLE_ARN}"
+      - attach_workspace:
+          at: /tmp
+      - pull:
+          environment: "development"
+          to: /tmp/embedded.min.js
+      - transform-snippet_connection:
+          artifact: /tmp/embedded.min.js
+          url: https://tesseract.staging-textus.net
+      - deploy:
+          environment: "staging"
+          artifact: /tmp/embedded.min.js
+  production_deploy:
+    docker:
+      - image: cimg/aws:2024.03
+    steps:
+      - aws-configure-environment_profile:
+          profile_name: "staging"
+          role_arn: "${AWS_STAG_ROLE_ARN}"
+      - aws-configure-environment_profile:
+          profile_name: "production"
+          role_arn: "${AWS_PROD_ROLE_ARN}"
+      - attach_workspace:
+          at: /tmp
+      - pull:
+          environment: "staging"
+          to: /tmp/embedded.min.js
+      - transform-snippet_connection:
+          artifact: /tmp/embedded.min.js
+          url: https://next.textus.com
+      - deploy:
+          environment: "production"
+          artifact: /tmp/embedded.min.js
+
+workflows:
+  on_merge:
+    jobs:
+      - development_deploy:
+          filters:
+            branches:
+              only: main
+      - hold:
+          name: promote_to_staging
+          type: approval
+          requires:
+            - development_deploy
+      - staging_deploy:
+          requires:
+            - promote_to_staging
+      - hold:
+          name: promote_to_production
+          type: approval
+          requires:
+            - staging_deploy
+      - production_deploy:
+          requires:
+            - promote_to_production
