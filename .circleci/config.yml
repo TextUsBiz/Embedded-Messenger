@@ -69,7 +69,7 @@ commands:
         type: string
     steps:
       - run:
-          name: Upload Archive Build
+          name: Pull Build from Previous Environment
           command: |
             aws --profile << parameters.environment >> \
               s3 cp \
