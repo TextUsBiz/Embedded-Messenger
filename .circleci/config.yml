@@ -46,15 +46,15 @@ commands:
       - aws-s3/copy:
           profile_name: << parameters.environment >>
           arguments: |
-            --cache-control public, max-age=3600
+            --cache-control 'public,max-age=3600'
           from: << parameters.artifact >>
           to:   s3://textus.${CIRCLE_JOB:0:4}.static-host/$(cat /tmp/deploy_location)
       - aws-s3/copy:
           profile_name: << parameters.environment >>
           arguments: |
-            --storage-class STANDARD_IA
-            --cache-control public, max-age=15
-            --metadata archive=true
+            --storage-class 'STANDARD_IA' \
+            --cache-control 'public, max-age=15' \
+            --metadata 'archive=true'
           from: << parameters.artifact >>
           to:   s3://textus.${CIRCLE_JOB:0:4}.static-host/$(cat /tmp/archive_location)
   pull:
