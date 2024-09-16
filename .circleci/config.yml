@@ -68,10 +68,13 @@ commands:
       to:
         type: string
     steps:
-      - aws-s3/copy:
-          profile_name: << parameters.environment >>
-          from: s3://textus.$(cut -c-4 \<<< "<< parameters.environment >>").static-host/$(cat /tmp/archive_location)
-          to:   << parameters.to >>
+      - run:
+          name: Upload Archive Build
+          command: |
+            aws --profile << parameters.environment >> \
+              s3 cp \
+                s3://textus.$(cut -c-4 \<<< "<< parameters.environment >>").static-host/$(cat /tmp/archive_location) \
+                << parameters.to >>
   transform-snippet_connection:
     parameters:
       artifact:
