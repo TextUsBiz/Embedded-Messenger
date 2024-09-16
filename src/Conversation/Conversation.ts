@@ -1,7 +1,7 @@
 import { TextUsEmbeddedConversationOptionProps } from "../models/TextUsEmbeddedConversationOptionProps";
 
 // Replaced during the build process.
-const textUsUrl = process.env.TEXTUS_URL;
+const textUsUrl = "http://localhost:3000";
 
 /**
  * Method to build the iframe URL to display an embedded conversation.
@@ -18,7 +18,7 @@ export class TextUsEmbeddedConversation {
 
   /**
    * Class to build an iframe with URL to display an embedded conversation.
-   * @param conatinerId Id of container element.
+   * @param containerId Id of container element.
    * @param props Props for embedded conversation.
    * @returns Embedded Conversation iframe (placed inside of container).
    */
