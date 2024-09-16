@@ -37,7 +37,7 @@ You can import the Embedded codebase from our CDN provider. Create a `<script>` 
   import { 
     TextUsEmbeddedConversation, 
     getConversationUrl 
-  } from 'https://cdn.jsdelivr.net/gh/TextUsBiz/Embedded-Messenger@main/textus-embedded/lib/1.0.0/embedded.min.js';
+  } from 'https://static.textus.com/715863c/1/embedded.min.js';
 
   // Your code here.
   ...
@@ -50,7 +50,7 @@ You may also use the `import()` method.
 <script defer type="module">
   ...
 
-  import('https://cdn.jsdelivr.net/gh/TextUsBiz/Embedded-Messenger@main/textus-embedded/lib/1.0.0/embedded.min.js').then((TextUsModule) => {
+  import('https://static.textus.com/715863c/1/embedded.min.js').then((TextUsModule) => {
     const { 
       TextUsEmbeddedConversation, 
       getConversationUrl 
@@ -133,7 +133,7 @@ Here's a fully working example.
     <title>Basic sample app</title>
     <script defer type="module">
       // Fetch the embedded conversation script.
-      import { TextUsEmbeddedConversation } from "https://cdn.jsdelivr.net/gh/TextUsBiz/Embedded-Messenger@main/textus-embedded/lib/1.0.0/embedded.min.js";
+      import { TextUsEmbeddedConversation } from "https://static.textus.com/715863c/1/embedded.min.js";
 
       // Generate the embedded conversation iframe.
       const textUsEmbeddedConversation = new TextUsEmbeddedConversation(
