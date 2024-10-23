@@ -67,6 +67,7 @@ You may also use the `import()` method.
 
 Then, create an instance of the TextUsEmbeddedConversation() class. Ensure to pass in the `id` used by your container element. Afterwards, you can render the instance with the `render()` method.
 
+The iframe will render by default. If you want to hide it until prompted, set `initiallyHidden` to true in the options prop. In addition to `.render()`, you can use `.hide()`, `.show()` or `.toggle()` to control whether the iframe is visible.
 ```html
 <script defer>
   ...
@@ -75,6 +76,7 @@ Then, create an instance of the TextUsEmbeddedConversation() class. Ensure to pa
   const textUsEmbeddedConversation = new TextUsEmbeddedConversation('iframe-here', {
     channelPartner: 'CompanyName',
     height: '800px',
+    initiallyHidden: true,
     width: '800px',
     contact: {
       phoneNumber: '555-555-5555',
@@ -83,6 +85,15 @@ Then, create an instance of the TextUsEmbeddedConversation() class. Ensure to pa
 
   // Render the iframe.
   textUsEmbeddedConversation.render();
+
+  // Hides the iframe.
+  textUsEmbeddedConversation.hide();
+
+  // Unhides the iframe.
+  textUsEmbeddedConversation.show();
+
+  // Toggles the iframe.
+  textUsEmbeddedConversation.toggle();
 
   ...
 </script>
