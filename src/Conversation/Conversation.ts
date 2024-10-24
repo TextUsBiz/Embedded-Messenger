@@ -1,4 +1,4 @@
-import { TextUsEmbeddedConversationOptionProps } from "../models/TextUsEmbeddedConversationOptionProps";
+import { TextUsEmbeddedConversationOptionProps } from "../models";
 
 // Replaced during the build process.
 const textUsUrl = "http://localhost:3000";
@@ -53,6 +53,7 @@ export class TextUsEmbeddedConversation {
       }
 
       // Set iframe attributes. 
+      this.iframe.id = 'embedded-conversation-iframe';
       this.iframe.src = getConversationUrl(contact.phoneNumber, channelPartner);
       this.iframe.width = width || String(container.clientWidth) + 'px';
       this.iframe.height = height || String(container.clientHeight) + 'px';
