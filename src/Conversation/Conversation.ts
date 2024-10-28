@@ -61,13 +61,17 @@ export class TextUsEmbeddedConversation {
 
       // Set iframe attributes.
       this.iframe.id = "embedded-conversation-iframe";
-      this.iframe.src = getConversationUrl(contact.phoneNumber, channelPartner);
       this.iframe.width = width || String(container.clientWidth) + "px";
       this.iframe.height = height || String(container.clientHeight) + "px";
 
       // Hide iframe if initiallyHidden is true.
       if (this.props.initiallyHidden) {
         this.iframe.style.display = "none";
+      } else {
+        this.iframe.src = getConversationUrl(
+          contact.phoneNumber,
+          channelPartner,
+        );
       }
 
       // Clear container.
@@ -85,6 +89,11 @@ export class TextUsEmbeddedConversation {
    */
   show() {
     if (this.iframe) {
+      !this.iframe.src &&
+        (this.iframe.src = getConversationUrl(
+          this.props.contact.phoneNumber,
+          this.props.channelPartner,
+        ));
       this.iframe.style.display = "block";
     }
   }
@@ -103,8 +112,7 @@ export class TextUsEmbeddedConversation {
    */
   toggle() {
     if (this.iframe) {
-      this.iframe.style.display =
-        this.iframe.style.display === "none" ? "block" : "none";
+      this.iframe.style.display === "none" ? this.show() : this.hide();
     }
   }
 

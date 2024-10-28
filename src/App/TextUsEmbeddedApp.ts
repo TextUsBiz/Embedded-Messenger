@@ -42,13 +42,14 @@ export class TextUsEmbeddedApp {
 
       // Set iframe attributes.
       this.iframe.id = "embedded-app-iframe";
-      this.iframe.src = textUsUrl;
       this.iframe.width = width || String(container.clientWidth) + "px";
       this.iframe.height = height || String(container.clientHeight) + "px";
 
       // Hide iframe if initiallyHidden is true.
       if (this.props.initiallyHidden) {
         this.iframe.style.display = "none";
+      } else {
+        this.iframe.src = textUsUrl;
       }
 
       // Clear container.
@@ -66,6 +67,7 @@ export class TextUsEmbeddedApp {
    */
   show() {
     if (this.iframe) {
+      !this.iframe.src && (this.iframe.src = textUsUrl);
       this.iframe.style.display = "block";
     }
   }
@@ -84,8 +86,7 @@ export class TextUsEmbeddedApp {
    */
   toggle() {
     if (this.iframe) {
-      this.iframe.style.display =
-        this.iframe.style.display === "none" ? "block" : "none";
+      this.iframe.style.display === "none" ? this.show() : this.hide();
     }
   }
 
