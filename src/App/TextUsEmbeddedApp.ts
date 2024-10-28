@@ -15,7 +15,7 @@ export class TextUsEmbeddedApp {
   constructor(
     public containerId: string,
     public props: TextUsEmbeddedAppProps,
-  ) { }
+  ) {}
 
   /**
    * Render the embedded app iframe.
@@ -25,7 +25,7 @@ export class TextUsEmbeddedApp {
       const { channelPartner, height, width } = this.props;
 
       if (!channelPartner) {
-        throw new Error('No channel partner provided.');
+        throw new Error("No channel partner provided.");
       }
 
       // Create an iframe element.
@@ -35,22 +35,57 @@ export class TextUsEmbeddedApp {
       const container = document.querySelector(`#${this.containerId}`);
 
       if (!container) {
-        throw new Error(`Could not find container with id: ${this.containerId}`);
+        throw new Error(
+          `Could not find container with id: ${this.containerId}`,
+        );
       }
 
-      // Set iframe attributes. 
-      this.iframe.id = 'embedded-app-iframe';
+      // Set iframe attributes.
+      this.iframe.id = "embedded-app-iframe";
       this.iframe.src = textUsUrl;
-      this.iframe.width = width || String(container.clientWidth) + 'px';
-      this.iframe.height = height || String(container.clientHeight) + 'px';
+      this.iframe.width = width || String(container.clientWidth) + "px";
+      this.iframe.height = height || String(container.clientHeight) + "px";
+
+      // Hide iframe if initiallyHidden is true.
+      if (this.props.initiallyHidden) {
+        this.iframe.style.display = "none";
+      }
 
       // Clear container.
-      container.innerHTML = '';
+      container.innerHTML = "";
 
       // Append iframe to container.
       container.appendChild(this.iframe);
     } catch (err) {
       console.error(err);
+    }
+  }
+
+  /**
+   * Show the iframe.
+   */
+  show() {
+    if (this.iframe) {
+      this.iframe.style.display = "block";
+    }
+  }
+
+  /**
+   * Hide the iframe.
+   */
+  hide() {
+    if (this.iframe) {
+      this.iframe.style.display = "none";
+    }
+  }
+
+  /**
+   * Toggle the iframe visibility.
+   */
+  toggle() {
+    if (this.iframe) {
+      this.iframe.style.display =
+        this.iframe.style.display === "none" ? "block" : "none";
     }
   }
 
@@ -63,9 +98,12 @@ export class TextUsEmbeddedApp {
       return;
     }
 
-    this.iframe.contentWindow.postMessage({
-      type: 'findNumbersResponse',
-      payload: contacts,
-    }, '*');
+    this.iframe.contentWindow.postMessage(
+      {
+        type: "findNumbersResponse",
+        payload: contacts,
+      },
+      "*",
+    );
   }
 }
