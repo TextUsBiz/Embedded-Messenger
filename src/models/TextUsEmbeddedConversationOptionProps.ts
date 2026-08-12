@@ -5,5 +5,7 @@ export interface TextUsEmbeddedConversationOptionProps {
   width?: string;
   contact: {
     phoneNumber: string;
+    firstName?: string;
+    lastName?: string;
   };
 }

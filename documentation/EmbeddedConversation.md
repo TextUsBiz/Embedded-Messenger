@@ -80,6 +80,8 @@ The iframe will render by default. If you want to hide it until prompted, set `i
     width: '800px',
     contact: {
       phoneNumber: '555-555-5555',
+      firstName: 'Mary',
+      lastName: 'Jane',
     }
   });
 
@@ -99,11 +101,15 @@ The iframe will render by default. If you want to hide it until prompted, set `i
 </script>
 ```
 
-To update the contact details and re-render the iframe, use the `setContact()` method.
+The `contact` object accepts an optional `firstName` and `lastName`. When provided, the contact's name is forwarded to the conversation so it can be displayed. Both fields are optional and backward-compatible — if omitted, the conversation behaves exactly as before.
+
+To update the contact details and re-render the iframe, use the `setContact()` method. The name fields are supported here too, so a mid-session contact swap carries the name.
 
 ```js
 textUsEmbeddedConversation.setContact({ 
   phoneNumber: '444-444-4444',
+  firstName: 'John',
+  lastName: 'Doe',
 });
 ```
 
@@ -113,6 +119,12 @@ If you prefer, you can use the `getConversationUrl()` global method to return th
 
 ```js
 const conversationIframeUrl = getConversationUrl('555-555-5555', 'CompanyName');
+```
+
+`getConversationUrl()` also accepts an optional first and last name as its third and fourth arguments. When provided, they are appended to the returned URL so the contact's name is forwarded to the conversation.
+
+```js
+const conversationIframeUrl = getConversationUrl('555-555-5555', 'CompanyName', 'Mary', 'Jane');
 ```
 
 Then, use the returned URL as your iframe `src`.
@@ -155,6 +167,8 @@ Here's a fully working example.
           width: "800px",
           contact: {
             phoneNumber: "555-555-5555",
+            firstName: "Mary",
+            lastName: "Jane",
           },
         }
       );
@@ -168,6 +182,8 @@ Here's a fully working example.
         .addEventListener("click", () => {
           textUsEmbeddedConversation.setContact({
             phoneNumber: "444-444-4444",
+            firstName: "John",
+            lastName: "Doe",
           });
         });
     </script>
