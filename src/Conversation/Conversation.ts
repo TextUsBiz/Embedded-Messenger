@@ -7,15 +7,21 @@ const textUsUrl = "http://localhost:3000";
  * Method to build the iframe URL to display an embedded conversation.
  * @param phoneNumber Phone number of contact.
  * @param channelPartner Channel partner name.
+ * @param firstName Optional first name of contact.
+ * @param lastName Optional last name of contact.
  * @returns URL for iframe.
  */
 export function getConversationUrl(
   phoneNumber: string,
   channelPartner: string,
+  firstName?: string,
+  lastName?: string,
 ): string {
-  return `${textUsUrl}/c/embedded?phoneNumber=${encodeURIComponent(
-    phoneNumber,
-  )}&channelPartner=${channelPartner}`;
+  const params = new URLSearchParams({ phoneNumber, channelPartner });
+  // Emit lowercase param names — the tesseract app reads `firstname`/`lastname`.
+  if (firstName) params.set("firstname", firstName);
+  if (lastName) params.set("lastname", lastName);
+  return `${textUsUrl}/c/embedded?${params.toString()}`;
 }
 
 export class TextUsEmbeddedConversation {
@@ -71,6 +77,8 @@ export class TextUsEmbeddedConversation {
         this.iframe.src = getConversationUrl(
           contact.phoneNumber,
           channelPartner,
+          contact.firstName,
+          contact.lastName,
         );
       }
 
@@ -93,6 +101,8 @@ export class TextUsEmbeddedConversation {
         (this.iframe.src = getConversationUrl(
           this.props.contact.phoneNumber,
           this.props.channelPartner,
+          this.props.contact.firstName,
+          this.props.contact.lastName,
         ));
       this.iframe.style.display = "block";
     }
@@ -125,6 +135,8 @@ export class TextUsEmbeddedConversation {
     this.iframe!.src = getConversationUrl(
       contact.phoneNumber,
       this.props.channelPartner,
+      contact.firstName,
+      contact.lastName,
     );
   }
 }
